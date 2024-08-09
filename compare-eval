@@ -2,51 +2,113 @@
 
 set -e
 
+export LD_LIBRARY_PATH=$HOME/projects/opera/lib
 (cd regorus-profile; cargo build -r)
 (cd opa-profile; go mod tidy; go build)
+(cd go-regorus-profile; go mod tidy; go build)
+
 
 mkdir -p bin
 cp regorus-profile/target/release/regorus-profile bin/
 cp opa-profile/opa-profile bin/
+cp go-regorus-profile/opa-profile bin/go-regorus-profile
 
-# Test example policy evaluation
-echo "Testing example policy"
-echo -n "evaluating data.example.allow using OPA "
-bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 data.example.allow
+# STD
+echo "Testing std policy"
+echo  "------------------------"
+echo -n "evaluating p1 using OPA "
+bin/opa-profile -d policies/std/p1.rego -i policies/example/input.json -n 100000 -s 1 data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
+echo  "------------"
+echo -n "evaluating p1 using go-regorus "
+bin/go-regorus-profile -d policies/std/p1.rego -i policies/example/input.json -n 100000 -s 1 data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
+echo  "------------"
+echo -n "evaluating p1 using regorus eval-rule "
+bin/regorus-profile -d policies/std/p1.rego -i policies/example/input.json -n 100000 -s -r data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
+echo  "------------------------"
+echo -n "evaluating p2 using OPA "
+bin/opa-profile -d policies/std/p2.rego -i policies/example/input.json -n 100000 -s 1 data.policy_c2af3c62_344e_4ec0_a759_6c7a36696c4d.Authorize
+echo  "------------"
+echo -n "evaluating p2 using go-regorus "
+bin/go-regorus-profile -d policies/std/p2.rego -i policies/example/input.json -n 100000 -s 1 data.policy_c2af3c62_344e_4ec0_a759_6c7a36696c4d.Authorize
+echo  "------------"
+echo -n "evaluating p2 using regorus eval-rule "
+bin/regorus-profile -d policies/std/p2.rego -i policies/example/input.json -n 100000 -s -r data.policy_c2af3c62_344e_4ec0_a759_6c7a36696c4d.Authorize
+echo  "------------------------"
+echo -n "evaluating p3 using OPA "
+bin/opa-profile -d policies/std/p3.rego -i policies/example/input.json -n 100000 -s 1 data.policy_71c9563b_ac0c_4e0c_a7a8_77bf7e9cd1cc.Authorize
+echo  "------------"
+echo -n "evaluating p3 using go-regorus "
+bin/go-regorus-profile -d policies/std/p3.rego -i policies/example/input.json -n 100000 -s 1 data.policy_71c9563b_ac0c_4e0c_a7a8_77bf7e9cd1cc.Authorize
+echo  "------------"
+echo -n "evaluating p3 using regorus eval-rule "
+bin/regorus-profile -d policies/std/p3.rego -i policies/example/input.json -n 100000 -s -r data.policy_71c9563b_ac0c_4e0c_a7a8_77bf7e9cd1cc.Authorize
+echo  "------------------------"
+echo -n "evaluating p4 using OPA "
+bin/opa-profile -d policies/std/p4.rego -i policies/example/input.json -n 100000 -s 1 data.policy_a96aefaf_5937_454b_b1d3_52d26047d777.Authorize
+echo  "------------"
+echo -n "evaluating p4 using go-regorus "
+bin/go-regorus-profile -d policies/std/p4.rego -i policies/example/input.json -n 100000 -s 1 data.policy_a96aefaf_5937_454b_b1d3_52d26047d777.Authorize
+echo  "------------"
+echo -n "evaluating p4 using regorus eval-rule "
+bin/regorus-profile -d policies/std/p4.rego -i policies/example/input.json -n 100000 -s -r data.policy_a96aefaf_5937_454b_b1d3_52d26047d777.Authorize
+echo  "------------------------"
+echo -n "evaluating p5 using OPA "
+bin/opa-profile -d policies/std/p5.rego -i policies/example/input.json -n 100000 -s 1 data.policy_65747cc8_746d_439d_a7c7_e31b5ff0ec84.Authorize
+echo  "------------"
+echo -n "evaluating p5 using go-regorus "
+bin/go-regorus-profile -d policies/std/p5.rego -i policies/example/input.json -n 100000 -s 1 data.policy_65747cc8_746d_439d_a7c7_e31b5ff0ec84.Authorize
+echo  "------------"
+echo -n "evaluating p5 using regorus eval-rule "
+bin/regorus-profile -d policies/std/p5.rego -i policies/example/input.json -n 100000 -s -r data.policy_65747cc8_746d_439d_a7c7_e31b5ff0ec84.Authorize
+echo  "------------------------"
+echo  "------------------------"
+echo -n "evaluating pAll using OPA "
+bin/opa-profile -d policies/std/pall.rego -i policies/example/input.json -n 100000 -s 1 data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
+echo  "------------"
+echo -n "evaluating pAll using go-regorus "
+bin/go-regorus-profile -d policies/std/pall.rego -i policies/example/input.json -n 100000 -s 1 data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
+echo  "------------"
+echo -n "evaluating pAll using regorus eval-rule "
+bin/regorus-profile -d policies/std/pall.rego -i policies/example/input.json -n 100000 -s -r data.policy_ff9bd0db_f407_4f32_b7a1_6bc757125e29.Authorize
 
-echo -n "evaluating data.example.allow using regorus eval-rule "
-bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -r data.example.allow
+# # Test example policy evaluation
+# echo "Testing example policy"
+# echo -n "evaluating data.example.allow using OPA "
+# bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -s 1 data.example.allow
 
-echo -n "evaluating data.example using OPA "
-bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 data.example
+# echo -n "evaluating data.example.allow using regorus eval-rule "
+# bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -s -r data.example.allow
 
-echo -n "evaluating data.example using regorus eval-query "
-bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -q data.example
+# echo -n "evaluating data.example using OPA "
+# bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -s 1 data.example
 
-echo -n "evaluating data using OPA "
-bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 data
+# echo -n "evaluating data.example using regorus eval-query "
+# bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -q data.example
 
-echo -n "evaluating data using regorus eval-query "
-bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -q data
+# echo -n "evaluating data using OPA "
+# bin/opa-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -s 1 data
 
-echo ""
-echo ""
-echo ""
-echo "Testing ACI policy"
-echo -n "evaluating data.framework.mount_overlay using OPA "
-bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 data.framework.mount_overlay
+# echo -n "evaluating data using regorus eval-query "
+# bin/regorus-profile -d policies/example/example.rego -i policies/example/input.json -n 100000 -q data
 
-echo -n "evaluating data.framework.mount_overlay using regorus eval-rule "
-bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -r data.framework.mount_overlay
+# echo ""
+# echo ""
+# echo ""
+# echo "Testing ACI policy"
+# echo -n "evaluating data.framework.mount_overlay using OPA "
+# bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -s 1 data.framework.mount_overlay
 
-echo -n "evaluating data.framework using OPA "
-bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 data.framework
+# echo -n "evaluating data.framework.mount_overlay using regorus eval-rule "
+# bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -s -r data.framework.mount_overlay
 
-echo -n "evaluating data.framework using regorus eval-query "
-bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -q data.framework
+# echo -n "evaluating data.framework using OPA "
+# bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -s 1 data.framework
 
-echo -n "evaluating data using OPA "
-bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 data
+# echo -n "evaluating data.framework using regorus eval-query "
+# bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -q data.framework
 
-echo -n "evaluating data using regorus eval-query "
-bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -q data
+# echo -n "evaluating data using OPA "
+# bin/opa-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -s 1 data
+
+# echo -n "evaluating data using regorus eval-query "
+# bin/regorus-profile -d policies/aci/framework.rego -d policies/aci/policy.rego -d policies/aci/api.rego -d policies/aci/data.json -i policies/aci/input.json -n 100000 -q data

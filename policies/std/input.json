@@ -1,0 +1,11 @@
+{
+    "CLIENT": {
+      "ADDRESS": "50.228.178.66",
+      "ASN": "701",
+      "LABEL": {
+        "geoip.ves.io/country": "USA"
+      }
+    },
+    "NAMESPACE": "default",
+    "SERVER": {}
+  }
